@@ -88,7 +88,7 @@ INSERT INTO categories(name, decade_of_conception)
 VALUES('Impressionism', 1860),
 ('Pop Art', 1950),
 ('Still Life', 1600),
-('Cubism', 1900)
+('Cubism', 1900),
 ('Surrealism', 1920);
 
 INSERT INTO mediums(painting_medium)
