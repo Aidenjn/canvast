@@ -34,8 +34,9 @@ SELECT p.id, p.title, p.year_created, p.image_link, p.artist, p.gallery, m.paint
 ;
 
 -- Transfering Art
-INSERT INTO paintings_categories (painting_id, category_id)
-    VALUES (:painting_id, :category_id_from_dropdown)
+UPDATE paintings
+    SET gallery = :gallery_id_from_text_entry
+    WHERE id = :painting_id_from_text_entry
 ;
 
 -- Deleting Art
@@ -47,8 +48,8 @@ INSERT INTO paintings (title, year_created, image_link, artist, gallery)
 ;
 
 -- Add Category to Painting
-INSERT INTO paintings (title, year_created, image_link, artist, gallery)
-    VALUES (:title_from_entry, :year_created_from_entry, :image_link_from_entry, :artist_from_entry, :gallery_from_entry)
+INSERT INTO paintings_categories (painting_id, category_id)
+    VALUES (:painting_id, :category_id_from_dropdown)
 ;
 
 -- Add Medium to Painting
