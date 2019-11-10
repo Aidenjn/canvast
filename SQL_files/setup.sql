@@ -1,0 +1,4 @@
+-- ** SETUP QUERIES **
+-- This file contains the queries that will be used
+-- to setup the database and populate it with initial
+-- data.
