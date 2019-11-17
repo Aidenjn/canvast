@@ -73,7 +73,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-        //context.jsscripts = ["deleteperson.js","filterpeople.js","searchpeople.js"];
+        context.jsscripts = ["filterpaintings.js"];
         var mysql = req.app.get('mysql');
         getPaintings(res, mysql, context, complete);
         getGalleries(res, mysql, context, complete);
@@ -90,7 +90,7 @@ module.exports = function(){
     router.get('/filter/:gallery', function(req, res){
         var callbackCount = 0;
         var context = {};
-        //context.jsscripts = ["deleteperson.js","filterpeople.js","searchpeople.js"];
+        context.jsscripts = ["filterpaintings.js"];
         var mysql = req.app.get('mysql');
         getPaintingsByGallery(req,res, mysql, context, complete);
         getGalleries(res, mysql, context, complete);
