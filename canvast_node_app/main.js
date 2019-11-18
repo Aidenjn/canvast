@@ -21,6 +21,7 @@ app.set('mysql', mysql);
 app.use('/people_certs', require('./people_certs.js'));
 app.use('/people', require('./people.js'));
 app.use('/planets', require('./planets.js'));
+app.use('/paintings', require('./paintings.js'));
 app.use('/', express.static('public'));
 
 app.use(function(req,res){

@@ -1,0 +1,41 @@
+<html>
+    {{#each foo}}
+    {{this}}
+    {{/each}}
+    
+    <h3>Filter paintings by gallery</h3>
+    <form id='filter_people' action='' method=''>
+        <select id='gallery_filter' name="gallery"> 
+            {{#each galleries}}
+            <option value="{{id}}">{{name}}</option>
+            {{/each}}
+        </select><br>
+        <input type="button" value="Filter" onclick="filterPaintingsByGallery()">
+    </form>
+
+    <h3>Current paintings:</h3>
+    <table>
+        <thead> 
+            <th>Id</th>
+            <th>Title</th> 
+            <th>Year</th> 
+            <th>Image</th>
+            <th>Artist ID</th>
+            <th>Gallery ID</th>  
+        </thead> 
+        <tbody>
+            {{#each paintings}} 
+            <tr> 
+                <td>{{id}}</td>
+                <td>{{title}}</td> 
+                <td>{{year_created}}</td> 
+                <td>{{image_link}}</td> 
+                <td>{{artist}}</td>
+                <td>{{gallery}}</td>
+                <!--<td><button onclick="deletePerson({{id}})">Delete</button></td>
+                <td><a href="/people/{{id}}">Update</a></td>-->
+            </tr> 
+            {{/each}} 
+        </tbody> 
+    </table> 
+</html>
