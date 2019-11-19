@@ -19,7 +19,7 @@ CREATE TABLE paintings(
 	year_created SMALLINT, 
 	image_link varchar(2083), 
 	artist int(11),
-	gallery int(11)
+	gallery int(11) NULL
 );
 
 DROP TABLE IF EXISTS galleries;
