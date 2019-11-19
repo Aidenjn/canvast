@@ -22,6 +22,10 @@ app.use('/people_certs', require('./people_certs.js'));
 app.use('/people', require('./people.js'));
 app.use('/planets', require('./planets.js'));
 app.use('/paintings', require('./paintings.js'));
+app.use('/artists', require('./artists.js'));
+app.use('/galleries', require('./galleries.js'));
+app.use('/mediums', require('./mediums.js'));
+app.use('/categories', require('./categories.js'));
 app.use('/', express.static('public'));
 
 app.use(function(req,res){

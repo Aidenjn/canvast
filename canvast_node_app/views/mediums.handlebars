@@ -1,0 +1,35 @@
+<html>
+    {{#each foo}}
+    {{this}}
+    {{/each}}
+
+    <div class="m-5"> 
+        <h3>Add new medium:</h3>
+        <form id="addmedium" action="/mediums" method="post">
+            <div class="form-group m-3">
+                <div class="form-row">
+                        <label class="mr-3" for="exampleFormControlInput3">Medium</label> 
+                        <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="painting_medium"><br>
+                </div> 
+            <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+        <br/> 
+
+        <h3>Current mediums:</h3>
+        <table class="table">
+            <thead> 
+                <th scope="col">Id</th>
+                <th scope="col">Medium</th> 
+            </thead> 
+            <tbody>
+                {{#each mediums}} 
+                <tr scope="row"> 
+                    <td>{{id}}</td>
+                    <td>{{painting_medium}}</td> 
+                </tr> 
+                {{/each}} 
+            </tbody> 
+        </table> 
+    </div>
+</html>

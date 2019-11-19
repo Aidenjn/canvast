@@ -2,40 +2,80 @@
     {{#each foo}}
     {{this}}
     {{/each}}
-    
-    <h3>Filter paintings by gallery</h3>
-    <form id='filter_people' action='' method=''>
-        <select id='gallery_filter' name="gallery"> 
-            {{#each galleries}}
-            <option value="{{id}}">{{name}}</option>
-            {{/each}}
-        </select><br>
-        <input type="button" value="Filter" onclick="filterPaintingsByGallery()">
-    </form>
 
-    <h3>Current paintings:</h3>
-    <table>
-        <thead> 
-            <th>Id</th>
-            <th>Title</th> 
-            <th>Year</th> 
-            <th>Image</th>
-            <th>Artist ID</th>
-            <th>Gallery ID</th>  
-        </thead> 
-        <tbody>
-            {{#each paintings}} 
-            <tr> 
-                <td>{{id}}</td>
-                <td>{{title}}</td> 
-                <td>{{year_created}}</td> 
-                <td>{{image_link}}</td> 
-                <td>{{artist}}</td>
-                <td>{{gallery}}</td>
-                <!--<td><button onclick="deletePerson({{id}})">Delete</button></td>
-                <td><a href="/people/{{id}}">Update</a></td>-->
-            </tr> 
-            {{/each}} 
-        </tbody> 
-    </table> 
+    <div class="page_module m-5">
+        <h3>Add new painting:</h3>
+        <form id="addpainting" action="/paintings" method="post">
+            <div class="form-group m-3">
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Title</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="title"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Year created</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="year_created"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Image link</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="image_link"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Artist</label> 
+                    <select name="artist" class="form-control w-25">
+                        {{#each artists}}
+                        <option value="{{id}}">{{first_name}} {{last_name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Gallery</label> 
+                    <select name="gallery" class="form-control w-25">
+                        {{#each galleries}}
+                        <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+        <br/>
+        
+        <h3>Filter paintings by gallery</h3>
+        <form id='filter_people' action='' method=''>
+            <div class="form-group m-3">
+                <select id='gallery_filter' name="gallery" class="form-control w-25"> 
+                    {{#each galleries}}
+                    <option value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select><br>
+                <input type="button" value="Filter" onclick="filterPaintingsByGallery()" class="btn btn-primary">
+            </div>
+        </form>
+
+        <h3>Current paintings:</h3>
+        <table class="table">
+            <thead> 
+                <th scope="col">Id</th>
+                <th scope="col">Title</th> 
+                <th scope="col">Year</th> 
+                <th scope="col">Image</th>
+                <th scope="col">Artist ID</th>
+                <th scope="col">Gallery ID</th>  
+            </thead> 
+            <tbody>
+                {{#each paintings}} 
+                <tr scope="row"> 
+                    <td>{{id}}</td>
+                    <td>{{title}}</td> 
+                    <td>{{year_created}}</td> 
+                    <td><img src="{{image_link}}" style="width:200px; height:200px;"/></td> 
+                    <td>{{artist}}</td>
+                    <td>{{gallery}}</td>
+                    <!--<td><button onclick="deletePerson({{id}})">Delete</button></td>
+                    <td><a href="/people/{{id}}">Update</a></td>-->
+                </tr> 
+                {{/each}} 
+            </tbody> 
+        </table> 
+    </div>
 </html>

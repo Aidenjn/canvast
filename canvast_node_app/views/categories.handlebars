@@ -1,0 +1,41 @@
+<html>
+    {{#each foo}}
+    {{this}}
+    {{/each}}
+
+    <div class="m-5">
+        <h3>Add new category:</h3>
+        <form id="addcategory" action="/categories" method="post">
+            <div class="form-group m-3">
+                <div class="form-row">
+                        <label class="mr-3" for="exampleFormControlInput3">Category</label> 
+                        <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="name"><br>
+                </div>
+                <div class="form-row">
+                        <label class="mr-3" for="exampleFormControlInput3">Decade of conception</label> 
+                        <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="decade_of_conception"><br>
+                </div>  
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+        <br/> 
+
+        <h3>Current categories:</h3>
+        <table class="table">
+            <thead> 
+                <th scope="col">Id</th>
+                <th scope="col">Name</th> 
+                <th scope="col">Decade of conception</th>
+            </thead> 
+            <tbody>
+                {{#each categories}} 
+                <tr scope="row"> 
+                    <td>{{id}}</td>
+                    <td>{{name}}</td>
+                    <td>{{decade_of_conception}}</td> 
+                </tr> 
+                {{/each}} 
+            </tbody> 
+        </table> 
+    </div>
+</html>
