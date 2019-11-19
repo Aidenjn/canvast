@@ -37,7 +37,7 @@ module.exports = function(){
 
     function getPaintingsByGallery(req, res, mysql, context, complete){
       //var query = "SELECT bsg_people.character_id as id, fname, lname, bsg_planets.name AS homeworld, age FROM bsg_people INNER JOIN bsg_planets ON homeworld = bsg_planets.planet_id WHERE bsg_people.homeworld = ?";
-      var query = "SELECT paintings.id as id, title, year_created, image_link, artist, galleries.name FROM paintings INNER JOIN galleries ON paintings.gallery = galleries.id WHERE paintings.gallery = ?;"
+      var query = "SELECT paintings.id as id, title, year_created, image_link, artist, gallery FROM paintings INNER JOIN galleries ON paintings.gallery = galleries.id WHERE paintings.gallery = ?;"
       console.log(req.params)
       var inserts = [req.params.gallery]
       mysql.pool.query(query, inserts, function(error, results, fields){
