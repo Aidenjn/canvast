@@ -1,0 +1,52 @@
+<html>
+    {{#each foo}}
+    {{this}}
+    {{/each}}
+    <div class="m-5">
+        <h3>Add new artist:</h3>
+        <form id="addartist" action="/artists" method="post">
+            <div class="form-group m-3">
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">First name</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="first_name"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Last name</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="last_name"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Year born</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="year_born"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Year deceased</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="year_deceased"><br>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+        <br/> 
+
+        <h3>Current artists:</h3>
+        <table class="table">
+            <thead> 
+                <th scope="col">Id</th>
+                <th scope="col">First name</th> 
+                <th scope="col">Last name</th> 
+                <th scope="col">Year born</th>
+                <th scope="col">Year deceased</th>
+            </thead> 
+            <tbody>
+                {{#each artists}} 
+                <tr scope="row"> 
+                    <td>{{id}}</td>
+                    <td>{{first_name}}</td> 
+                    <td>{{last_name}}</td> 
+                    <td>{{year_born}}</td>
+                    <td>{{year_deceased}}</td>
+                </tr> 
+                {{/each}} 
+            </tbody> 
+        </table> 
+    </div>
+</html>

@@ -1,0 +1,59 @@
+<html>
+    {{#each foo}}
+    {{this}}
+    {{/each}}
+
+    <div class="m-5">
+        <h3>Add new gallery:</h3>
+        <form id="addgallery" action="/galleries" method="post">
+            <div class="form-group m-3">
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Name</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="name"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Street</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="street"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">City</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="city"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">State</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="state"><br>
+                </div>
+                <div class="form-row">
+                    <label class="mr-3" for="exampleFormControlInput3">Country</label> 
+                    <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="country"><br>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+        <br/> 
+
+        <h3>Current galleries:</h3>
+        <table class="table">
+            <thead> 
+                <th scope="col">Id</th>
+                <th scope="col">Name</th> 
+                <th scope="col">Street</th> 
+                <th scope="col">City</th>
+                <th scope="col">State</th>
+                <th scope="col">Country</th>
+            </thead> 
+            <tbody>
+                {{#each galleries}} 
+                <tr scope="row"> 
+                    <td>{{id}}</td>
+                    <td>{{name}}</td> 
+                    <td>{{street}}</td> 
+                    <td>{{city}}</td>
+                    <td>{{state}}</td>
+                    <td>{{country}}</td>
+                </tr> 
+                {{/each}} 
+            </tbody> 
+        </table> 
+    </div>
+</html>

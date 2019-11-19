@@ -24,9 +24,20 @@ module.exports = function(){
         });
     }
 
+    function getArtists(res, mysql, context, complete){
+        mysql.pool.query("select id, first_name, last_name, year_born, year_deceased from artists", function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.artists = results;
+            complete();
+        });
+    }
+
     function getPaintingsByGallery(req, res, mysql, context, complete){
       //var query = "SELECT bsg_people.character_id as id, fname, lname, bsg_planets.name AS homeworld, age FROM bsg_people INNER JOIN bsg_planets ON homeworld = bsg_planets.planet_id WHERE bsg_people.homeworld = ?";
-      var query = "SELECT paintings.id as id, title, year_created, image_link, artist, galleries.name FROM paintings INNER JOIN galleries ON paintings.gallery = galleries.id WHERE paintings.gallery = ?;"
+      var query = "SELECT paintings.id as id, title, year_created, image_link, artist, gallery FROM paintings INNER JOIN galleries ON paintings.gallery = galleries.id WHERE paintings.gallery = ?;"
       console.log(req.params)
       var inserts = [req.params.gallery]
       mysql.pool.query(query, inserts, function(error, results, fields){
@@ -77,9 +88,10 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
         getPaintings(res, mysql, context, complete);
         getGalleries(res, mysql, context, complete);
+        getArtists(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 2){
+            if(callbackCount >= 3){
                 res.render('paintings', context);
             }
 
@@ -94,9 +106,10 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
         getPaintingsByGallery(req,res, mysql, context, complete);
         getGalleries(res, mysql, context, complete);
+        getArtists(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 2){
+            if(callbackCount >= 3){
                 res.render('paintings', context);
             }
 
@@ -139,22 +152,22 @@ module.exports = function(){
 
     /* Adds a person, redirects to the people page after adding */
 
-   /* router.post('/', function(req, res){
-        console.log(req.body.homeworld)
-        console.log(req.body)
+    router.post('/', function(req, res){
+        //console.log(req.body.homeworld)
+        //console.log(req.body)
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO bsg_people (fname, lname, homeworld, age) VALUES (?,?,?,?)";
-        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age];
+        var sql = "INSERT INTO paintings (title, year_created, image_link, artist, gallery) VALUES (?,?,?,?,?)";
+        var inserts = [req.body.title, req.body.year_created, req.body.image_link, req.body.artist, req.body.gallery];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 console.log(JSON.stringify(error))
                 res.write(JSON.stringify(error));
                 res.end();
             }else{
-                res.redirect('/people');
+                res.redirect('/paintings');
             }
         });
-    });*/
+    });
 
     /* The URI that update data is sent to in order to update a person */
 
