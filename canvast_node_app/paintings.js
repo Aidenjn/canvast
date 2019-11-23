@@ -5,7 +5,7 @@ module.exports = function(){
     function getPaintings(res, mysql, context, complete){
         mysql.pool.query(`select paintings.id, title, year_created, image_link, CONCAT(artists.first_name, " ", artists.last_name) as artist, galleries.name as gallery from paintings 
                         inner join artists on paintings.artist = artists.id
-                        inner join galleries on paintings.gallery = galleries.id
+                        left join galleries on paintings.gallery = galleries.id
                         order by paintings.id`, function(error, results, fields){
             if(error){
                 res.write(JSON.stringify(error));
@@ -34,6 +34,28 @@ module.exports = function(){
                 res.end();
             }
             context.artists = results;
+            complete();
+        });
+    }
+
+    function getCategories(res, mysql, context, complete){
+        mysql.pool.query("select id, name from categories", function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.categories = results;
+            complete();
+        });
+    }
+
+    function getMediums(res, mysql, context, complete){
+        mysql.pool.query("select id, painting_medium from mediums", function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.mediums = results;
             complete();
         });
     }
@@ -78,6 +100,38 @@ module.exports = function(){
                 res.end();
             }
             context.painting = results[0];
+            complete();
+        });
+    }
+
+    function getCategoriesForPainting(res, mysql, context, id, complete){
+        var sql = `SELECT c.id, c.name, c.decade_of_conception FROM categories c
+                    INNER JOIN paintings_categories pc ON pc.category_id = c.id
+                    INNER JOIN paintings p ON pc.painting_id = p.id 
+                    WHERE p.id = ?;`;
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.painting_categories = results;
+            complete();
+        });
+    }
+
+    function getMediumsForPainting(res, mysql, context, id, complete){
+        var sql = `SELECT m.id, m.painting_medium FROM mediums m
+                    INNER JOIN paintings_mediums pm ON pm.medium_id = m.id
+                    INNER JOIN paintings p on pm.painting_id = p.id
+                    WHERE p.id = ?`;
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.painting_mediums = results;
             complete();
         });
     }
@@ -140,17 +194,21 @@ module.exports = function(){
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
-        context.jsscripts = ["selectedpainting.js", "updatepainting.js"];
+        context.jsscripts = ["selectedpainting.js", "updatepainting.js", "addcategory.js", "deletecategory.js", "deletemedium.js"];
         var mysql = req.app.get('mysql');
         getPainting(res, mysql, context, req.params.id, complete);
         getArtists(res, mysql, context, complete);
         getGalleries(res, mysql, context, complete);
+        getCategoriesForPainting(res, mysql, context, req.params.id, complete);
+        getCategories(res, mysql, context, complete);
+        getMediumsForPainting(res, mysql, context, req.params.id, complete);
+        getMediums(res, mysql, context, complete);
         function complete(){
             callbackCount++;
-            if(callbackCount >= 3){
+            if(callbackCount >= 7){
+                context.categories = cleanList(context.painting_categories, context.categories)
                 res.render('update-painting', context);
             }
-
         }
     });
 
@@ -179,8 +237,8 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
         console.log(req.body)
         console.log(req.params.id)
-        var sql = `UPDATE paintings SET title=?, year_created=?, image_link=?, artist=?, gallery=? WHERE id=?;`;
-        var inserts = [req.body.title, req.body.year_created, req.body.image_link, req.body.artist, req.body.gallery, req.params.id];
+        var sql = `UPDATE paintings SET title=?, year_created=?, image_link=?, artist=?, gallery = IF(?='NULL', NULL, ?) WHERE id=?;`;
+        var inserts = [req.body.title, req.body.year_created, req.body.image_link, req.body.artist, req.body.gallery, req.body.gallery, req.params.id];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 console.log(error)
@@ -193,6 +251,36 @@ module.exports = function(){
         });
     });
 
+    router.post('/:id/category', function(req, res){
+        var mysql = req.app.get('mysql');
+        var sql = `INSERT INTO paintings_categories (painting_id, category_id) VALUES (?,?);`;
+        var inserts = [req.params.id, req.body.category];
+        sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+            if(error){
+                console.log(error)
+                res.write(JSON.stringify(error));
+                res.end();
+            }else{
+                res.redirect('/paintings/' + req.params.id)
+            }
+        });
+    });
+
+    router.post('/:id/medium', function(req, res){
+        var mysql = req.app.get('mysql');
+        var sql = `INSERT INTO paintings_mediums (painting_id, medium_id) VALUES (?,?);`;
+        var inserts = [req.params.id, req.body.medium];
+        sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+            if(error){
+                console.log(error)
+                res.write(JSON.stringify(error));
+                res.end();
+            }else{
+                res.redirect('/paintings/' + req.params.id)
+            }
+        });
+    });
+
     /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */
 
     router.delete('/:id', function(req, res){
@@ -200,6 +288,39 @@ module.exports = function(){
         var sql = "DELETE FROM paintings WHERE id = ?";
         var inserts = [req.params.id];
         sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                console.log(error)
+                res.write(JSON.stringify(error));
+                res.status(400);
+                res.end();
+            }else{
+                res.status(202).end();
+            }
+        })
+    })
+
+
+    router.delete('/:id/category/:cid', function(req, res){
+        var mysql = req.app.get('mysql');
+        var sql = "DELETE FROM paintings_categories WHERE painting_id = ? AND category_id = ?";
+        var inserts = [req.params.id, req.params.cid];
+        sql = mysql.pool.query(sql, inserts, function(error, results , fields){
+            if(error){
+                console.log(error)
+                res.write(JSON.stringify(error));
+                res.status(400);
+                res.end();
+            }else{
+                res.status(202).end();
+            }
+        })
+    })
+
+    router.delete('/:id/medium/:mid', function(req, res){
+        var mysql = req.app.get('mysql');
+        var sql = "DELETE FROM paintings_mediums WHERE painting_id = ? AND medium_id = ?";
+        var inserts = [req.params.id, req.params.mid];
+        sql = mysql.pool.query(sql, inserts, function(error, results , fields){
             if(error){
                 console.log(error)
                 res.write(JSON.stringify(error));
