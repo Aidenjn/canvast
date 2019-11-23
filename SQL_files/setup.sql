@@ -19,7 +19,7 @@ CREATE TABLE paintings(
 	year_created SMALLINT, 
 	image_link varchar(2083), 
 	artist int(11),
-	gallery int(11) NULL
+	gallery int(11) DEFAULT NULL
 );
 
 DROP TABLE IF EXISTS galleries;
@@ -56,7 +56,7 @@ CREATE TABLE artists(
 
 ALTER TABLE paintings
 ADD FOREIGN KEY (artist) REFERENCES artists(id) ON DELETE CASCADE,
-ADD FOREIGN KEY (gallery) REFERENCES galleries(id) ON DELETE CASCADE;
+ADD FOREIGN KEY (gallery) REFERENCES galleries(id) ON DELETE SET NULL ON UPDATE CASCADE;
 
 DROP TABLE IF EXISTS paintings_categories;
 CREATE TABLE paintings_categories(
