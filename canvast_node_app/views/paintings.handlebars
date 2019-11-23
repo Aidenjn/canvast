@@ -33,6 +33,7 @@
                         {{#each galleries}}
                         <option value="{{id}}">{{name}}</option>
                         {{/each}}
+                        <option value="NULL">No gallery</option>
                     </select>
                 </div>
                 <input type="submit" value="Submit" class="btn btn-primary">
@@ -59,8 +60,8 @@
                 <th scope="col">Title</th> 
                 <th scope="col">Year</th> 
                 <th scope="col">Image</th>
-                <th scope="col">Artist ID</th>
-                <th scope="col">Gallery ID</th>  
+                <th scope="col">Artist</th>
+                <th scope="col">Gallery</th>  
             </thead> 
             <tbody>
                 {{#each paintings}} 
@@ -70,9 +71,9 @@
                     <td>{{year_created}}</td> 
                     <td><img src="{{image_link}}" style="width:200px; height:200px;"/></td> 
                     <td>{{artist}}</td>
-                    <td>{{gallery}}</td>
-                    <!--<td><button onclick="deletePerson({{id}})">Delete</button></td>
-                    <td><a href="/people/{{id}}">Update</a></td>-->
+                    <td>{{gallery}}</td>                    
+                    <td><button class="btn btn-primary"><a href="/paintings/{{id}}" style="text-decoration: none; color: white;">Update</a></button></td>
+                    <td><button class="btn btn-danger" onclick="deletePainting({{id}})">Delete</button></td>
                 </tr> 
                 {{/each}} 
             </tbody> 
