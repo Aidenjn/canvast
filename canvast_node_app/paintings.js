@@ -179,11 +179,7 @@ module.exports = function(){
         var mysql = req.app.get('mysql');
         console.log(req.body)
         console.log(req.params.id)
-        var sql = `UPDATE paintings SET
-        title=?, 
-        year_created=?, image_link=?, 
-        artist=?, gallery=? 
-        WHERE id=?;`;
+        var sql = `UPDATE paintings SET title=?, year_created=?, image_link=?, artist=?, gallery=? WHERE id=?;`;
         var inserts = [req.body.title, req.body.year_created, req.body.image_link, req.body.artist, req.body.gallery, req.params.id];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
