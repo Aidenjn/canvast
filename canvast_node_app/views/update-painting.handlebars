@@ -36,4 +36,68 @@
 </form>
 <script defer>selectGallery({{painting.gallery}});</script>
 <script defer>selectArtist({{painting.artist}});</script>
+
+<h3 class="m-5">Categories for {{painting.title}}:</h3>
+    <table class="table m-5">
+        <thead>
+            <th scope="col">ID</th>
+            <th scope="col">Category</th>
+            <th scope="col">Decade of conception</th>
+        </thead>
+        <tbody>
+            {{#each painting_categories}}
+            <tr scope="row">
+                <td>{{id}}</td>
+                <td>{{name}}</td>
+                <td>{{decade_of_conception}}</td>
+                <td><button class="btn btn-danger" onclick="deleteCategory({{../painting.id}},{{id}})">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <form id="addcategory" action="/paintings/{{painting.id}}/category" method="post" class="m-5">
+        <div class="form-group m-3">
+            <div class="form-row">
+                <label class="mr-3 font-weight-bold" for="exampleFormControlInput3">Add new category</label> 
+                <select name="category" class="form-control w-25">
+                    {{#each categories}}
+                    <option id="selected_category" value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+                <input type="submit" value="Add" class="btn btn-primary ml-3">
+            </div>
+        </div>
+    </form>
+
+   <h3 class="m-5">Mediums for {{painting.title}}:</h3>
+    <table class="table m-5">
+        <thead>
+            <th scope="col">ID</th>
+            <th scope="col">Mediums</th>
+        </thead>
+        <tbody>
+            {{#each painting_mediums}}
+            <tr scope="row">
+                <td>{{id}}</td>
+                <td>{{painting_medium}}</td>
+                <td><button class="btn btn-danger" onclick="deleteMedium({{../painting.id}},{{id}})">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <form id="addmedium" action="/paintings/{{painting.id}}/medium" method="post" class="m-5">
+        <div class="form-group m-3">
+            <div class="form-row">
+                <label class="mr-3 font-weight-bold" for="exampleFormControlInput3">Add new medium</label> 
+                <select name="medium" class="form-control w-25">
+                    {{#each mediums}}
+                    <option value="{{id}}">{{painting_medium}}</option>
+                    {{/each}}
+                </select>
+                <input type="submit" value="Add" class="btn btn-primary ml-3">
+            </div>
+        </div>
+    </form>
 </html>
