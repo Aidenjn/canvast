@@ -1,0 +1,39 @@
+<html>
+<h1 class="m-5">Update {{painting.title}}:</h1>
+<form class="m-5" id="update-painting" action="/paintings" method="put">
+    <div class="form-group m-3">
+        <div class="form-row">
+            <label class="mr-3" for="exampleFormControlInput3">Title</label> 
+            <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="title" value={{painting.title}}><br>
+        </div>
+        <div class="form-row">
+            <label class="mr-3" for="exampleFormControlInput3">Year created</label> 
+            <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="year_created" value={{painting.year_created}}><br>
+        </div>
+        <div class="form-row">
+            <label class="mr-3" for="exampleFormControlInput3">Image link</label> 
+            <input class="form-control w-25" id="exampleFormControlInput1" type="text" name="image_link" value={{painting.image_link}}><br>
+        </div>
+        <div class="form-row">
+            <label class="mr-3" for="exampleFormControlInput3">Artist</label> 
+            <select name="artist" class="form-control w-25" id="artist-selector">
+                {{#each artists}}
+                <option value="{{id}}">{{first_name}} {{last_name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-row">
+            <label class="mr-3" for="exampleFormControlInput3">Gallery</label> 
+            <select name="gallery" class="form-control w-25" id="gallery-selector">
+                {{#each galleries}}
+                <option value="{{id}}">{{name}}</option>
+                {{/each}}
+                <option value="NULL">No gallery</option>
+            </select>
+        </div>
+    </div>
+    <button class="btn btn-primary" onclick="updatePainting({{painting.id}})">Update</button>
+</form>
+<script defer>selectGallery({{painting.gallery}});</script>
+<script defer>selectArtist({{painting.artist}});</script>
+</html>
