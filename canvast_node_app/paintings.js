@@ -206,7 +206,6 @@ module.exports = function(){
         function complete(){
             callbackCount++;
             if(callbackCount >= 7){
-                context.categories = cleanList(context.painting_categories, context.categories)
                 res.render('update-painting', context);
             }
         }
