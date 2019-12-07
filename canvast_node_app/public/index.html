@@ -4,31 +4,59 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="../main.css">
 </head>
-<body class="page_module">
-  <h1>CanVast: Art Gallery Website</h1>
-  <h4>Menu of operations</h4>
-  <ul class="list-group">
-    <!-- <li> <a href='/people'>List, Add, Update and Delete Persons (perform
-        Create, Read, Update, Delete operations on a single entity) and filter
-        by Homeworld and search by First name</a></li>
-    <li> <a href='/people_certs'>Change Certifications for a Person (change M-to-M relationships)</a></li>
-    <li> <a href='/people/1'>Change Homeworld of a Person (change 1-to-M
-        relationships)</a></li>
-    <br/> -->
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">Canvast</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="./paintings">Paintings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./artists">Artists</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./galleries">Galleries</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./mediums">Mediums</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./categories">Categories</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="page_module">
+    <h1>CanVast: Art Gallery Website</h1>
+    <h4>Menu of operations</h4>
+    <ul class="list-group">
+      <!-- <li> <a href='/people'>List, Add, Update and Delete Persons (perform
+          Create, Read, Update, Delete operations on a single entity) and filter
+          by Homeworld and search by First name</a></li>
+      <li> <a href='/people_certs'>Change Certifications for a Person (change M-to-M relationships)</a></li>
+      <li> <a href='/people/1'>Change Homeworld of a Person (change 1-to-M
+          relationships)</a></li>
+      <br/> -->
+      
+      <li class="list-group-item"><a href='/paintings'>List, add, and filter paintings</a></li>
+      <li class="list-group-item"><a href='/artists'>List and add artists</a></li>
+      <li class="list-group-item"><a href='/galleries'>List and add galleries</a></li>
+      <li class="list-group-item"><a href='/mediums'>List and add mediums</a></li>
+      <li class="list-group-item"><a href='/categories'>List and add categories</a></li>
     
-    <li class="list-group-item"><a href='/paintings'>List, add, and filter paintings</a></li>
-    <li class="list-group-item"><a href='/artists'>List and add artists</a></li>
-    <li class="list-group-item"><a href='/galleries'>List and add galleries</a></li>
-    <li class="list-group-item"><a href='/mediums'>List and add mediums</a></li>
-    <li class="list-group-item"><a href='/categories'>List and add categories</a></li>
-  
-  </ul>
+    </ul>
 
-  <br/>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+    <br/>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </div>
 <!--  <p><a href='https://github.com/knightsamar/CS340-Sample-Web-App/'>Source code of this webapp</a></p> -->
 </body>
 </html>
