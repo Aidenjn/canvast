@@ -2,6 +2,7 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
 
+    /* Select all paintings for table, display the artist and gallery name instead of ID numbers */
     function getPaintings(res, mysql, context, complete){
         mysql.pool.query(`select paintings.id, title, year_created, image_link, CONCAT(artists.first_name, " ", artists.last_name) as artist, galleries.name as gallery from paintings 
                         inner join artists on paintings.artist = artists.id
@@ -16,6 +17,7 @@ module.exports = function(){
         });
     }
 
+    /* Select all galleries for dropdown */
     function getGalleries(res, mysql, context, complete){
         mysql.pool.query("select id, city, state, country, street, name from galleries", function(error, results, fields){
             if(error){
@@ -27,6 +29,7 @@ module.exports = function(){
         });
     }
 
+    /* Select all artists for dropdown */
     function getArtists(res, mysql, context, complete){
         mysql.pool.query("select id, first_name, last_name, year_born, year_deceased from artists", function(error, results, fields){
             if(error){
@@ -38,6 +41,7 @@ module.exports = function(){
         });
     }
 
+    /* Select all categories for dropdown */
     function getCategories(res, mysql, context, complete){
         mysql.pool.query("select id, name from categories", function(error, results, fields){
             if(error){
@@ -49,6 +53,7 @@ module.exports = function(){
         });
     }
 
+    /* Select all mediums for dropdown*/
     function getMediums(res, mysql, context, complete){
         mysql.pool.query("select id, painting_medium from mediums", function(error, results, fields){
             if(error){
@@ -60,8 +65,8 @@ module.exports = function(){
         });
     }
 
+    /* Select paintings based on the gallery ID to filter the paintings page*/
     function getPaintingsByGallery(req, res, mysql, context, complete){
-      //var query = "SELECT bsg_people.character_id as id, fname, lname, bsg_planets.name AS homeworld, age FROM bsg_people INNER JOIN bsg_planets ON homeworld = bsg_planets.planet_id WHERE bsg_people.homeworld = ?";
       var query = "SELECT paintings.id as id, title, year_created, image_link, artist, gallery FROM paintings INNER JOIN galleries ON paintings.gallery = galleries.id WHERE paintings.gallery = ?;"
       console.log(req.params)
       var inserts = [req.params.gallery]
@@ -75,22 +80,7 @@ module.exports = function(){
         });
     }
 
-    /* Find people whose fname starts with a given string in the req */
-    /*function getPeopleWithNameLike(req, res, mysql, context, complete) {
-      //sanitize the input as well as include the % character
-       var query = "SELECT bsg_people.character_id as id, fname, lname, bsg_planets.name AS homeworld, age FROM bsg_people INNER JOIN bsg_planets ON homeworld = bsg_planets.planet_id WHERE bsg_people.fname LIKE " + mysql.pool.escape(req.params.s + '%');
-      console.log(query)
-
-      mysql.pool.query(query, function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.end();
-            }
-            context.people = results;
-            complete();
-        });
-    }*/
-
+    /* Select a painting for the purpose of updating or deleting*/
     function getPainting(res, mysql, context, id, complete){
         var sql = "SELECT id, title, year_created, image_link, artist, gallery FROM paintings WHERE id = ?";
         var inserts = [id];
@@ -104,6 +94,7 @@ module.exports = function(){
         });
     }
 
+    /* Selects all categories for a specific painting */
     function getCategoriesForPainting(res, mysql, context, id, complete){
         var sql = `SELECT c.id, c.name, c.decade_of_conception FROM categories c
                     INNER JOIN paintings_categories pc ON pc.category_id = c.id
@@ -120,6 +111,7 @@ module.exports = function(){
         });
     }
 
+    /* Selects all mediums for a specific painting */
     function getMediumsForPainting(res, mysql, context, id, complete){
         var sql = `SELECT m.id, m.painting_medium FROM mediums m
                     INNER JOIN paintings_mediums pm ON pm.medium_id = m.id
@@ -137,7 +129,6 @@ module.exports = function(){
     }
 
     /*Display all paintings. Requires web based javascript to delete users with AJAX*/
-
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -173,24 +164,7 @@ module.exports = function(){
         }
     });
 
-    /*Display all people whose name starts with a given string. Requires web based javascript to delete users with AJAX */
-    /*router.get('/search/:s', function(req, res){
-        var callbackCount = 0;
-        var context = {};
-        context.jsscripts = ["deleteperson.js","filterpeople.js","searchpeople.js"];
-        var mysql = req.app.get('mysql');
-        getPeopleWithNameLike(req, res, mysql, context, complete);
-        getPlanets(res, mysql, context, complete);
-        function complete(){
-            callbackCount++;
-            if(callbackCount >= 2){
-                res.render('people', context);
-            }
-        }
-    });*/
-
-    /* Display one person for the specific purpose of updating people */
-
+    /* Display one painting for the specific purpose of updating paintings*/
     router.get('/:id', function(req, res){
         callbackCount = 0;
         var context = {};
@@ -211,14 +185,18 @@ module.exports = function(){
         }
     });
 
-    /* Adds a person, redirects to the people page after adding */
-
+    /* Adds a painting, redirects to the paintings page after adding */
     router.post('/', function(req, res){
-        //console.log(req.body.homeworld)
-        //console.log(req.body)
         var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO paintings (title, year_created, image_link, artist, gallery) VALUES (?,?,?,?,?)";
-        var inserts = [req.body.title, req.body.year_created, req.body.image_link, req.body.artist, req.body.gallery];
+        var gallery = req.body.gallery
+        if (gallery == 'NULL'){
+            var sql = "INSERT INTO paintings (title, year_created, image_link, artist, gallery) VALUES (?,?,?,?,NULL)";
+            var inserts = [req.body.title, req.body.year_created, req.body.image_link, req.body.artist];
+        }
+        else {
+            var sql = "INSERT INTO paintings (title, year_created, image_link, artist, gallery) VALUES (?,?,?,?,?)";
+            var inserts = [req.body.title, req.body.year_created, req.body.image_link, req.body.artist, req.body.gallery];
+        }
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 console.log(JSON.stringify(error))
@@ -230,8 +208,7 @@ module.exports = function(){
         });
     });
 
-    /* The URI that update data is sent to in order to update a person */
-
+    /* The URI that update data is sent to in order to update a painting */
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
         console.log(req.body)
@@ -250,6 +227,7 @@ module.exports = function(){
         });
     });
 
+    /* Insert a category into a painting, updating a many-to-many relationship */
     router.post('/:id/category', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = `INSERT INTO paintings_categories (painting_id, category_id) VALUES (?,?);`;
@@ -265,6 +243,7 @@ module.exports = function(){
         });
     });
 
+    /* Insert a medium into a painting, updating a many-to-many relationship */
     router.post('/:id/medium', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = `INSERT INTO paintings_mediums (painting_id, medium_id) VALUES (?,?);`;
@@ -281,7 +260,6 @@ module.exports = function(){
     });
 
     /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */
-
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "DELETE FROM paintings WHERE id = ?";
@@ -299,6 +277,7 @@ module.exports = function(){
     })
 
 
+    /* Remove a category from a painting */
     router.delete('/:id/category/:cid', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "DELETE FROM paintings_categories WHERE painting_id = ? AND category_id = ?";
@@ -315,6 +294,7 @@ module.exports = function(){
         })
     })
 
+    /* Remove a medium from a painting */
     router.delete('/:id/medium/:mid', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "DELETE FROM paintings_mediums WHERE painting_id = ? AND medium_id = ?";

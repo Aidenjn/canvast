@@ -2,6 +2,7 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
     
+    /* Select all galleries to display in the table */
     function getGalleries(res, mysql, context, complete){
         mysql.pool.query("select id, city, state, country, street, name from galleries", function(error, results, fields){
             if(error){
@@ -13,6 +14,7 @@ module.exports = function(){
         });
     }
 
+    /* GET request to display current galleries */
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -28,6 +30,7 @@ module.exports = function(){
         }
     });
 
+    /* POST request to insert into the galleries table */
     router.post('/', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO galleries (city, state, country, street, name) VALUES (?,?,?,?,?)";
