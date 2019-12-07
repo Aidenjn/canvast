@@ -3,7 +3,7 @@
 -- to setup the database and populate it with initial
 -- data.
 
-
+-- Drop all the tables so they can be recreated cleanly 
 DROP TABLE IF EXISTS artists;
 DROP TABLE IF EXISTS galleries;
 DROP TABLE IF EXISTS paintings_categories;
@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS mediums;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS paintings;
 
+-- Create paintings table
 DROP TABLE IF EXISTS paintings;
 CREATE TABLE paintings(
 	id int(11) AUTO_INCREMENT PRIMARY KEY,
@@ -22,6 +23,7 @@ CREATE TABLE paintings(
 	gallery int(11) DEFAULT NULL
 );
 
+-- Create galleries table
 DROP TABLE IF EXISTS galleries;
 CREATE TABLE galleries(
 	id int(11) AUTO_INCREMENT PRIMARY KEY,
@@ -32,6 +34,7 @@ CREATE TABLE galleries(
 	name varchar(255) NOT NULL
 );
 
+-- Create categories table
 DROP TABLE IF EXISTS categories;
 CREATE TABLE categories(
 	id int(11) AUTO_INCREMENT PRIMARY KEY,
@@ -39,12 +42,14 @@ CREATE TABLE categories(
 	decade_of_conception SMALLINT
 );
 
+-- Create mediums table
 DROP TABLE IF EXISTS mediums;
 CREATE TABLE mediums(
 	id int(11) AUTO_INCREMENT PRIMARY KEY,
 	painting_medium varchar(255) NOT NULL
 );
 
+-- Create artists table
 DROP TABLE IF EXISTS artists;
 CREATE TABLE artists(
 	id int(11) AUTO_INCREMENT PRIMARY KEY, 
@@ -54,10 +59,12 @@ CREATE TABLE artists(
 	year_deceased SMALLINT
 );
 
+-- Add foriegn key relationships from artists and galleries to the paintings table
 ALTER TABLE paintings
 ADD FOREIGN KEY (artist) REFERENCES artists(id) ON DELETE CASCADE,
 ADD FOREIGN KEY (gallery) REFERENCES galleries(id) ON DELETE SET NULL ON UPDATE CASCADE;
 
+-- Create paintings categories table
 DROP TABLE IF EXISTS paintings_categories;
 CREATE TABLE paintings_categories(
 	painting_id INT(11), 
@@ -66,6 +73,7 @@ CREATE TABLE paintings_categories(
 	FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );
 
+-- Create paintings mediums table
 DROP TABLE IF EXISTS paintings_mediums;
 CREATE TABLE paintings_mediums(
 	painting_id INT(11),
@@ -76,11 +84,13 @@ CREATE TABLE paintings_mediums(
 
 -- BEGIN DATA POPULATION
 
+-- Populate galleries table with initial data
 INSERT INTO galleries(city, state, country, street, name)
 VALUES ('Los Angeles', 'California', 'United States', 'Wilshire Blvd', 'Los Angeles County Museum of Art'),
 ('New York', 'New York', 'United States', '5th Ave', 'The Metropolitan Museum of Art'),
 ('New York', 'New York', 'United States', '53rd St', 'The Museum of Modern Art');
 
+-- Populate artists table with initial data
 INSERT INTO artists(first_name, last_name, year_born, year_deceased)
 VALUES ('Vincent', 'van Gogh', 1853, 1890), 
 ('Pablo', 'Picasso', 1881, 1973),
@@ -88,6 +98,7 @@ VALUES ('Vincent', 'van Gogh', 1853, 1890),
 ('Andy', 'Warhol', 1928, 1987),
 ('Roy', 'Lichtenstein', 1923, 1997);
 
+-- Populate paintings table with initial data
 INSERT INTO paintings(title, year_created, image_link, artist, gallery)
 VALUES ('Starry Night', 1889, 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/300px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg', 1, 3),
 ('Sunflowers', 1888, 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Vincent_Willem_van_Gogh_127.jpg/800px-Vincent_Willem_van_Gogh_127.jpg', 1, 2),
@@ -100,6 +111,7 @@ VALUES ('Starry Night', 1889, 'https://upload.wikimedia.org/wikipedia/commons/th
 ('Crying Girl', 1963, 'https://mocomuseum.com/uploads/2018/05/Crying-Girl-2.jpg', 5, 1),
 ('Brushstrokes', 1965, 'https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Brushstrokes.png/250px-Brushstrokes.png', 5, 3);
 
+-- Populate categories table with initial data
 INSERT INTO categories(name, decade_of_conception)
 VALUES('Impressionism', 1860),
 ('Pop Art', 1950),
@@ -107,12 +119,14 @@ VALUES('Impressionism', 1860),
 ('Cubism', 1900),
 ('Surrealism', 1920);
 
+-- Populate mediums table with initial data
 INSERT INTO mediums(painting_medium)
 VALUES ('Oil'),
 ('Magna'),
 ('Watercolor'),
 ('Enamel');
 
+-- Populate paintings_categories table with initial data
 INSERT INTO paintings_categories(painting_id, category_id)
 VALUES (1, 1),
 (2, 3),
@@ -126,6 +140,7 @@ VALUES (1, 1),
 (9, 2),
 (10, 2);
 
+-- Populate paintings_mediums table with initial data
 INSERT INTO paintings_mediums(painting_id, medium_id)
 VALUES (1, 1),
 (2, 1), 
