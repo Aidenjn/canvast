@@ -1,4 +1,2 @@
-# canvast
-Art gallery website.
 
-website link: <https://aidenjn.github.io/canvast/>
+This code was adapted by the sample application developed by Samarendra M Hedaoo. The original source code can be found here: https://github.com/knightsamar/CS340-Sample-Web-App/. It was adapted to fulfill all the requirements outlined by Michael Curry for the CS340 Databases course. Code was developed by Aiden Nelson and Claire Cahill. 

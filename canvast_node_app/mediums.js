@@ -2,6 +2,7 @@ module.exports = function(){
     var express = require('express');
     var router = express.Router();
     
+    /* Select all mediums to display in table */
     function getMediums(res, mysql, context, complete){
         mysql.pool.query("select id, painting_medium from mediums", function(error, results, fields){
             if(error){
@@ -13,6 +14,7 @@ module.exports = function(){
         });
     }
 
+    /* GET request to display the mediums table*/
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -28,6 +30,7 @@ module.exports = function(){
         }
     });
 
+    /* POST request to insert into the mediums table*/
     router.post('/', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO mediums (painting_medium) VALUES (?)";
